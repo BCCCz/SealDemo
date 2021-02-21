@@ -1,2 +1,7 @@
 # SealDemo
- SealDemo
+```bash
+cmake .
+make
+./sealdemo
+```
+
