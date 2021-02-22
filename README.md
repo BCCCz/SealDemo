@@ -1,8 +1,8 @@
-#### SealDemo
+## SealDemo
 
 Calculate Euclidean Metric and Dot Product
 
-#### Compiling SEAL
+## Compiling SEAL
 
 SealDemo depends on [Microsoft SEAL version 3.6.0](https://github.com/microsoft/SEAL/tree/3.6.0). Install SEAL before compiling SealPIR.
 
