@@ -236,12 +236,13 @@ vector<Ciphertext> get_sum_rotate(SEALContext &context,CKKSEncoder& ckks_encoder
                 << context.get_context_data(encrypt_sum_cache.parms_id())->chain_index() << endl;
                 */
             
+            /*
             decryptor.decrypt(encrypt_sum_cache, plain_sum_cache);
             ckks_encoder.decode(plain_sum_cache, result_sum_cache);
             
             cout << "rotated 1 & add : " << endl;
             print_vector(result_sum_cache, 5, 13);
-            
+            */
         }
 
         /*
@@ -258,13 +259,13 @@ vector<Ciphertext> get_sum_rotate(SEALContext &context,CKKSEncoder& ckks_encoder
         evaluator.rescale_to_next_inplace(encrypt_sum_cache);
         //cout << "    + Scale of encrypt_sum_cache after rescale: " << log2(encrypt_sum_cache.scale()) << endl;
         
-        /*
+        
         // output test 
         decryptor.decrypt(encrypt_sum_cache, plain_sum_cache);
         ckks_encoder.decode(plain_sum_cache, result_sum_cache);
         cout << "sum of dist & * k : " << endl;
         print_vector(result_sum_cache, 5, 13);
-        */
+        
         encrypt_RR_matrix.push_back(encrypt_sum_cache);
         /*
         *  output test begin
