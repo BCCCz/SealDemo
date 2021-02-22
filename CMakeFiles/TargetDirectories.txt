@@ -1,3 +1,0 @@
-/home/bc/SealDemo/CMakeFiles/rebuild_cache.dir
-/home/bc/SealDemo/CMakeFiles/edit_cache.dir
-/home/bc/SealDemo/CMakeFiles/sealdemo.dir
