@@ -13,7 +13,6 @@ const double scale = pow(2.0, 40);// 放大因子
 
 
 vector<double> get_input(size_t slot_count) {
-  
     vector<double> input(slot_count, 0ULL);
     //input.reserve(slot_count); // 申请空间
 
@@ -35,9 +34,8 @@ vector<double> get_input(size_t slot_count) {
         in.close();
     }
     
-    cout << "Search V: " << endl;
-    print_vector(input); // 前5 后5 项
-
+    //cout << "Search V: " << endl;
+    //print_vector(input); // 前5 后5 项
     return input;
 }
 
@@ -61,10 +59,9 @@ vector<vector<double>> get_database(size_t slot_count) {
         in.close();
     }
 
-    cout << "Data E:" << endl;
+    //cout << "Data E:" << endl;
     // get database output test
-    for(int i = 0 ; i< 10 ; i++)
-        print_vector(E_matrix[i]);
+    
     return E_matrix;
 }
 
@@ -72,8 +69,8 @@ vector<vector<double>> get_database(size_t slot_count) {
 
 //* ejcrypt get probe_p;
 Ciphertext get_encrypt_probe(CKKSEncoder& ckks_encoder,Encryptor & encryptor, vector<double>v_input) {
-    cout << "V Encrypt" << endl;
-    cout << "Done" << endl;
+    //cout << "V Encrypt" << endl;
+    //cout << "Done" << endl;
 
     //* 加密获得probe_p;
     Plaintext v_plaintext;
@@ -89,8 +86,8 @@ Ciphertext get_encrypt_probe(CKKSEncoder& ckks_encoder,Encryptor & encryptor, ve
 
 //encrypt get enceypt_E_matrix
 vector<Ciphertext> get_encrypt_E_matrix(CKKSEncoder& ckks_encoder, Encryptor& encryptor, vector<vector<double>>E_matrix) {
-    cout << "E_matrix Encrypt" << endl;
-    cout << "Done" << endl;
+    //cout << "E_matrix Encrypt" << endl;
+    //cout << "Done" << endl;
     
     vector<Ciphertext> encrypt_E_matrix;
     for (auto it = E_matrix.begin(); it != E_matrix.end(); it++) {
@@ -126,8 +123,8 @@ vector<Ciphertext> dot_product(CKKSEncoder& ckks_encoder,Evaluator & evaluator,D
         
         decryptor.decrypt(encrypt_cheng_cache, plain_cheng_cache);
         ckks_encoder.decode(plain_cheng_cache, result_cheng_cache);
-        cout << "multiply: " << endl;
-        print_vector(result_cheng_cache,5,13);
+        //cout << "multiply: " << endl;
+        //print_vector(result_cheng_cache,5,13);
 
         /*
         *  output test begin
@@ -171,7 +168,7 @@ vector<Ciphertext> dot_product(CKKSEncoder& ckks_encoder,Evaluator & evaluator,D
         */
 
     }
-    print_line(__LINE__);
+    //print_line(__LINE__);
     return encrypt_R_matrix;
 }
 
@@ -182,7 +179,7 @@ vector<Ciphertext> dot_product(CKKSEncoder& ckks_encoder,Evaluator & evaluator,D
 * k = {1,0, . . .0}
 */
 vector<Ciphertext> get_sum_rotate(SEALContext &context,CKKSEncoder& ckks_encoder, Evaluator& evaluator,Encryptor &encryptor ,Decryptor& decryptor, vector<Ciphertext>encrypt_R_matrix,GaloisKeys & galois_keys,RelinKeys & relin_keys) {
-    print_line(__LINE__);
+    //print_line(__LINE__);
     vector<Ciphertext> encrypt_RR_matrix;
     /*
     * get encryptor of vector K{1,0,0,....0}
@@ -277,27 +274,27 @@ vector<Ciphertext> get_sum_rotate(SEALContext &context,CKKSEncoder& ckks_encoder
     *  Calculate end;
     */
 
-    print_line(__LINE__);
-    cout << "------get_sum_rotate() end------" << endl;
+    //print_line(__LINE__);
+    //cout << "------get_sum_rotate() end------" << endl;
     return encrypt_RR_matrix;
 }
 
 vector<Ciphertext> get_dist(SEALContext& context,CKKSEncoder& ckks_encoder, Evaluator& evaluator, vector<Ciphertext> encrypt_E_matrix, Ciphertext probe_p,Encryptor & encryptor ,Decryptor& decryptor, RelinKeys& relin_keys,  GaloisKeys& galois_keys) {
-    print_line(__LINE__);
+    //print_line(__LINE__);
     vector<Ciphertext> encrypt_R_matrix;
 
     /*
     * get (Ci - Pi)^2
     */
    
-    cout << "sub & square && stored in encrypt_R_matrix: " << endl;
+    //cout << "sub & square && stored in encrypt_R_matrix: " << endl;
     vector<Ciphertext> encrypt_R_matrix_cache = dot_product(ckks_encoder, evaluator, decryptor,encrypt_E_matrix,probe_p, relin_keys);
     /*
     * get sum
     */
     encrypt_R_matrix = get_sum_rotate(context,ckks_encoder,evaluator,encryptor, decryptor, encrypt_R_matrix_cache,galois_keys,relin_keys);
 
-    print_line(__LINE__);
+    //print_line(__LINE__);
     return encrypt_R_matrix;
 }
 
