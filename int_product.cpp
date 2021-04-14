@@ -11,6 +11,7 @@ using namespace seal;
 
 size_t number_n; // 有效数目个数
 
+//查询向量输入
 vector<uint64_t> get_input(size_t slot_count) 
 {
     vector<uint64_t> input(slot_count, 0ULL);
@@ -37,6 +38,7 @@ vector<uint64_t> get_input(size_t slot_count)
     return input;
 }
 
+//数据矩阵输入
 vector<vector<uint64_t>> get_database(size_t slot_count) 
 {
     vector<vector<uint64_t>> E_matrix;
@@ -63,6 +65,7 @@ vector<vector<uint64_t>> get_database(size_t slot_count)
     return E_matrix;
 }
 
+//查询向量编码，加密
 Ciphertext get_encrypt_probe(BatchEncoder&batch_encoder,Encryptor&encryptor,vector<uint64_t>v_input) 
 {
     Plaintext v_plaintext;
@@ -74,6 +77,7 @@ Ciphertext get_encrypt_probe(BatchEncoder&batch_encoder,Encryptor&encryptor,vect
     return probe_p;
 }
 
+//对数据矩阵按照维度编码加密
 vector<Ciphertext> get_encrypt_E_matrix(BatchEncoder&batch_encoder, Encryptor& encryptor, vector<vector<uint64_t>>E_matrix) 
 {
     vector<Ciphertext> encrypt_E_matrix;
@@ -88,6 +92,7 @@ vector<Ciphertext> get_encrypt_E_matrix(BatchEncoder&batch_encoder, Encryptor& e
     return encrypt_E_matrix;
 }
 
+//计算内积
 vector<Ciphertext> dot_product(BatchEncoder& batch_encoder,Evaluator & evaluator,Decryptor & decryptor,vector<Ciphertext> encrypt_E_matrix, Ciphertext probe_p,RelinKeys & relin_keys) 
 {
     vector<Ciphertext> encrypt_R_matrix;
@@ -110,6 +115,7 @@ vector<Ciphertext> dot_product(BatchEncoder& batch_encoder,Evaluator & evaluator
     return encrypt_R_matrix;
 }
 
+//调用rotate函数对所有点乘进行累加，同时计算查询向量和所有数据向量间的内积
 Ciphertext get_sum_rotate(SEALContext &context,BatchEncoder& batch_encoder, Evaluator& evaluator,Encryptor &encryptor ,Decryptor& decryptor, vector<Ciphertext>encrypt_R_matrix,GaloisKeys & galois_keys,RelinKeys & relin_keys) {
 
     size_t slot_count = batch_encoder.slot_count();
@@ -142,6 +148,7 @@ Ciphertext get_sum_rotate(SEALContext &context,BatchEncoder& batch_encoder, Eval
     return encrypt_vector_k;
 }
 
+//调用前面三个函数
 Ciphertext get_dist(SEALContext& context,BatchEncoder&batch_encoder, Evaluator& evaluator, vector<Ciphertext> encrypt_E_matrix, Ciphertext probe_p,Encryptor & encryptor ,Decryptor& decryptor, RelinKeys& relin_keys,  GaloisKeys& galois_keys) 
 {
     Ciphertext encrypt_R_matrix;
@@ -150,7 +157,7 @@ Ciphertext get_dist(SEALContext& context,BatchEncoder&batch_encoder, Evaluator& 
     return encrypt_R_matrix;
 }
 
-
+//保存密文为二进制文件到本地
 void saveCiphertext(string filename,vector<Ciphertext> abc)    // 3.12
 {
   string name = filename;
@@ -166,6 +173,7 @@ void saveCiphertext(string filename,vector<Ciphertext> abc)    // 3.12
   
 }
 
+//保存密钥为二进制文件到本地
 void saveKeys(string filename1, string filename2,RelinKeys& relin_keys,  GaloisKeys& galois_keys)    
 // 3.12 保存密钥
 { 
@@ -178,7 +186,7 @@ void saveKeys(string filename1, string filename2,RelinKeys& relin_keys,  GaloisK
     gkey.close();
 }  
   
-
+//重新读取密钥
 RelinKeys loadRkeys(SEALContext& context,string filename)    
 // 3.12 读取relin_keys
 { 
@@ -201,6 +209,7 @@ GaloisKeys loadGkeys(SEALContext& context,string filename)
     return g;
 } 
 
+//重新读取密文
 Ciphertext unsafe_loadCiphertext(SEALContext& context,string filename) // 3.12
 {
   ifstream ct;
@@ -209,6 +218,7 @@ Ciphertext unsafe_loadCiphertext(SEALContext& context,string filename) // 3.12
   result.unsafe_load(context,ct);
   return result;
 }
+
 
 int main()
 {
